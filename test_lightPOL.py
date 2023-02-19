@@ -1,9 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
-
-
+import seaborn as sns
 
 
 def area_pollution(sc,total_area,pod_d, adjacent_locations):
@@ -18,7 +16,7 @@ def area_pollution(sc,total_area,pod_d, adjacent_locations):
         return((adj_escaped_light/total_area)*.001)
     else:
         return((adj_escaped_light/total_area) + local_pol)
- 
+
 pop_density = 23726/ 2.37 # density per mile
 sqm_f = 18.35
 alpha = 1 #TBD
@@ -55,7 +53,7 @@ labels = ["Ferndale: ", "Arleta: ", "Forest: "]
  #   print("Algorithm produced for:",labels[i], results[i], "Actual Pollution is:", actual_LP[i])
 
 def v2light_pollution(pop_density,build_density,road_density,bright_light,area,adj_pol):
-    sum = (pop_density**3 + build_density**2 + road_density**2)*bright_light * area 
+    sum = (pop_density**3 + build_density**2 + road_density**2)*bright_light * area
     outside_light = 1
     if len(adj_pol) == 0:
         return(sum)
@@ -77,13 +75,20 @@ print(v2light_pollution(8,8,8,8,1,[[1,1,1,1,1],[2,2,3,1,1]]))
 
 
 
+
+
 data2 = [[1,3,2,1,1,1328.9],[9,9,9,9,1,8022.4],[8,8,8,8,1,0]]
 
 empty_adj = []
 max_caseN = v2light_pollution(10,10,10,10,10,empty_adj)
 max_case = [10,10,10,10,10,max_caseN]
 
+urban = v2light_pollution(10,10,8,10,1,[[7,5,10,10,3]])
+suburban = v2light_pollution(7,5,10,10,3,[[10,10,8,10,1]])
+
 data2.append(max_case)
+data2.append(urban)
+data2.append(suburban)
 
 
 params = ['pop_density','build_density','road_density', 'lightybrity','area','light-estimation']
@@ -94,11 +99,11 @@ df.to_csv('./dataset.csv')
 triples=pd.read_csv("./dataset.csv")
 
 # Need to find a good way to visualize
-# Also more data variations, along with negative 
+# Also more data variations, along with negative
 # instances to make the data more interesting!
 
 #sns.catplot(data=triples,kind='swarm', x='mew',y='total',hue='lam')
-sns.relplot(
-        alpha=.5, palette="muted",
-        height=5, data=triples)
-plt.show()
+#sns.relplot(
+ #       alpha=.5, palette="muted",
+  #     height=5, data=triples)
+#plt.show()
