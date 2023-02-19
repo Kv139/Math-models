@@ -65,33 +65,43 @@ def calculate_adjacency(matrix):
     sum = matrix[3]*(matrix[0]**3 + matrix[1]**2 + matrix[2]**2) * .1 * matrix[3]
     return sum
 
+def calc_risk(light_estimate):
+    risk = 10*(1-(abs(132001.0 - light_estimate)/132001.0))
+    return risk
+
 
 print("TESTING FUCK TION")
-print("This is a protected land closer to populated area")
-print(v2light_pollution(1,3,2,1,1,[[9,9,9,9,2],[8,8,8,8,3]]))
-print("This is like an urban area by nothingness LIKE MY SOUL")
-print(v2light_pollution(9,9,9,9,1,[[1,1,1,1,1],[2,2,3,1,1]]))
-print(v2light_pollution(8,8,8,8,1,[[1,1,1,1,1],[2,2,3,1,1]]))
+#print("This is a protected land closer to populated area")
+#print(v2light_pollution(1,3,2,1,1,[[9,9,9,9,2],[8,8,8,8,3]]))
+#print("This is like an urban area by nothingness LIKE MY SOUL")
+#print(v2light_pollution(9,9,9,9,1,[[1,1,1,1,1],[2,2,3,1,1]]))
+#print(v2light_pollution(8,8,8,8,1,[[1,1,1,1,1],[2,2,3,1,1]]))
 
 
-
-
-
-data2 = [[1,3,2,1,1,1328.9],[9,9,9,9,1,8022.4],[8,8,8,8,1,0]]
 
 empty_adj = []
-max_caseN = v2light_pollution(10,10,10,10,10,empty_adj)
-max_case = [10,10,10,10,10,max_caseN]
+max_caseN = v2light_pollution(10,10,10,10,10,[[10,10,10,10,10]])
+max_case = [10,10,10,10,10,max_caseN,10]
 
-urban = v2light_pollution(10,10,8,10,1,[[7,5,10,10,3]])
-suburban = v2light_pollution(7,5,10,10,3,[[10,10,8,10,1]])
+#params = ['pop_density','build_density','road_density', 'lightybrity','area','light-estimation']
+urban_l = v2light_pollution(10,10,8,10,10,[[7,5,10,10,3]])
+suburban_l = v2light_pollution(7,5,10,10,10,[[10,10,8,10,1],[2,1,3,10,10]])
+rural_1 = v2light_pollution(2,1,3,10,10,[[10,10,8,10,1],[.1,0,1,10,7]])
+protected_1 = v2light_pollution(0.1,0,1,10,7,[[10,10,8,10,1]])
 
-data2.append(max_case)
-data2.append(urban)
-data2.append(suburban)
+print("Urban risk with area=1 ",calc_risk(urban_l))
+print("suburban risk with area=1 " ,calc_risk(suburban_l))
+
+urban = [10,10,8,10,1,urban_l,calc_risk(urban_l)]
+suburban = [7,5,10,10,1,suburban_l,calc_risk(suburban_l)]
+rural =[2,1,3,10,10,rural_1,calc_risk(rural_1)]
+protected =[0.1,0,1,10,7,protected_1,calc_risk(protected_1)]
+
+data2 = [max_case,urban,suburban,rural,protected]
 
 
-params = ['pop_density','build_density','road_density', 'lightybrity','area','light-estimation']
+
+params = ['pop_density','build_density','road_density', 'lightybrity','area','light-estimation','risk-assesment']
 df = pd.DataFrame(data2,columns=params)
 df.to_csv('./dataset.csv')
 
