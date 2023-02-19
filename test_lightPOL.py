@@ -51,34 +51,42 @@ modelscoreFor=area_pollution(forest[0],forest[1],forest[2], adj_spaces_forest)
 results = [modelscoreFERN,modelscoreA,modelscoreFor]
 labels = ["Ferndale: ", "Arleta: ", "Forest: "]
 
-for i in range(0,len(results)):
-    print("Algorithm produced for:",labels[i], results[i], "Actual Pollution is:", actual_LP[i])
+#for i in range(0,len(results)):
+ #   print("Algorithm produced for:",labels[i], results[i], "Actual Pollution is:", actual_LP[i])
 
-def v2light_pollution(pop_density,build_density,road_density,bright_light,adj_pol):
-    sum = (pop_density**3 + build_density**2 + road_density**2)*bright_light
+def v2light_pollution(pop_density,build_density,road_density,bright_light,area,adj_pol):
+    sum = (pop_density**3 + build_density**2 + road_density**2)*bright_light * area 
     outside_light = 1
+    if len(adj_pol) == 0:
+        return(sum)
     for i in adj_pol:
         outside_light += calculate_adjacency(i)
     return(outside_light + sum)
 
 def calculate_adjacency(matrix):
-    sum = matrix[3]*(matrix[0]**3 + matrix[1]**2 + matrix[2]**2) * .1
+    sum = matrix[3]*(matrix[0]**3 + matrix[1]**2 + matrix[2]**2) * .1 * matrix[3]
     return sum
 
 
 print("TESTING FUCK TION")
 print("This is a protected land closer to populated area")
-print(v2light_pollution(1,3,2,1,[[9,9,9,9],[8,8,8,8]]))
+print(v2light_pollution(1,3,2,1,1,[[9,9,9,9,2],[8,8,8,8,3]]))
 print("This is like an urban area by nothingness LIKE MY SOUL")
-print(v2light_pollution(9,9,9,9,[[1,1,1,1],[2,2,3,1]]))
-print(v2light_pollution(8,8,8,8,[[1,1,1,1],[2,2,3,1]]))
-
-#print(v2light_pollution(1,3,2,1,[[9,9,9,9],[8,8,8,8]]))
+print(v2light_pollution(9,9,9,9,1,[[1,1,1,1,1],[2,2,3,1,1]]))
+print(v2light_pollution(8,8,8,8,1,[[1,1,1,1,1],[2,2,3,1,1]]))
 
 
-data2 = [[1,3,2,1,1328.9],[9,9,9,9,8022.4],[8,8,8,8,0]]
 
-params = ['pop_density','build_density','road_density', 'lightybrity','light-estimation']
+data2 = [[1,3,2,1,1,1328.9],[9,9,9,9,1,8022.4],[8,8,8,8,1,0]]
+
+empty_adj = []
+max_caseN = v2light_pollution(10,10,10,10,10,empty_adj)
+max_case = [10,10,10,10,10,max_caseN]
+
+data2.append(max_case)
+
+
+params = ['pop_density','build_density','road_density', 'lightybrity','area','light-estimation']
 df = pd.DataFrame(data2,columns=params)
 df.to_csv('./dataset.csv')
 
@@ -90,10 +98,7 @@ triples=pd.read_csv("./dataset.csv")
 # instances to make the data more interesting!
 
 #sns.catplot(data=triples,kind='swarm', x='mew',y='total',hue='lam')
-sns.relplot(x="mew", y="lam", hue="total",
+sns.relplot(
         alpha=.5, palette="muted",
         height=5, data=triples)
-
 plt.show()
-
-
