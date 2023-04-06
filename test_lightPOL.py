@@ -70,7 +70,7 @@ def calc_risk(light_estimate):
     return risk
 
 
-print("TESTING FUCK TION")
+print("TESTING FUNCTION")
 #print("This is a protected land closer to populated area")
 #print(v2light_pollution(1,3,2,1,1,[[9,9,9,9,2],[8,8,8,8,3]]))
 #print("This is like an urban area by nothingness LIKE MY SOUL")
